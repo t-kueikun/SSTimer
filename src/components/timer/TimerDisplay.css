@@ -1,0 +1,39 @@
+.timer-display {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 18vw;
+    font-weight: 700;
+    text-align: center;
+    user-select: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    letter-spacing: -5px;
+}
+
+.timer-neutral {
+    color: var(--text-primary);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.timer-red {
+    color: var(--timer-hold);
+    text-shadow: 0 0 30px var(--timer-hold);
+    transform: scale(0.98);
+}
+
+.timer-green {
+    color: var(--timer-ready);
+    text-shadow: 0 0 30px var(--timer-ready);
+    transform: scale(1.02);
+}
+
+.timer-running {
+    color: var(--timer-running);
+    opacity: 0.9;
+}
+
+@media (min-width: 1200px) {
+    .timer-display {
+        font-size: 250px;
+    }
+}

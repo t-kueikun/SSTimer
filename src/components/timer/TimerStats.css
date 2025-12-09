@@ -1,0 +1,28 @@
+.timer-stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 20px;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-secondary);
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-family: monospace;
+    color: var(--text-primary);
+}
