@@ -1,8 +1,10 @@
 .app-container {
-    background-color: transparent;
     width: 100vw;
     height: 100vh;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
+    position: relative;
+    overflow: hidden;
+    background-color: #0f172a;
+    color: white;
+    touch-action: none;
+    /* Prevent scroll/zoom for swipe gestures */
 }

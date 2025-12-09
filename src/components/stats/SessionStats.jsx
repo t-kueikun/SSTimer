@@ -2,15 +2,30 @@ import React from 'react';
 import { calculateAvg, calculateBest } from '../../utils/stats';
 import './SessionStats.css';
 
-const SessionStats = ({ solves, formatTime, onRemove }) => {
+const SessionStats = ({ solves, formatTime, onRemove, currentSession = 1, onSessionChange }) => {
     const ao5 = calculateAvg(solves, 5);
     const ao12 = calculateAvg(solves, 12);
     const best = calculateBest(solves);
 
     return (
         <div className="session-stats">
-            <div className="stats-header">
-                <h3>Session 1</h3>
+            <div className="stats-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <button
+                        onClick={() => onSessionChange(Math.max(1, currentSession - 1))}
+                        className="session-nav-btn"
+                        disabled={currentSession <= 1}
+                    >
+                        ◀
+                    </button>
+                    <h3>Session {currentSession}</h3>
+                    <button
+                        onClick={() => onSessionChange(currentSession + 1)}
+                        className="session-nav-btn"
+                    >
+                        ▶
+                    </button>
+                </div>
                 <span>({solves.length})</span>
             </div>
 

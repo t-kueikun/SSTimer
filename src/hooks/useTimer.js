@@ -29,7 +29,7 @@ const formatTime = (ms) => {
     }
 };
 
-export const useTimer = (onSolveComplete) => {
+export const useTimer = (onSolveComplete, onSwipeDown) => {
     const [time, setTime] = useState(0);
     const [timerState, setTimerState] = useState(TIMER_STATE.IDLE);
 
@@ -39,11 +39,17 @@ export const useTimer = (onSolveComplete) => {
     const frameRef = useRef(null);
     const holdTimeoutRef = useRef(null);
     const onSolveCompleteRef = useRef(onSolveComplete);
+    const onSwipeDownRef = useRef(onSwipeDown);
 
-    // Keep callback ref updated
+    // Swipe detection refs
+    const touchStartRef = useRef(null);
+    const isSwipeRef = useRef(false);
+
+    // Keep callback refs updated
     useEffect(() => {
         onSolveCompleteRef.current = onSolveComplete;
-    }, [onSolveComplete]);
+        onSwipeDownRef.current = onSwipeDown;
+    }, [onSolveComplete, onSwipeDown]);
 
     // Keep state ref updated
     useEffect(() => {
@@ -149,6 +155,11 @@ export const useTimer = (onSolveComplete) => {
         if (e.target.tagName === 'BUTTON') return;
 
         initAudio();
+        const touch = e.touches[0];
+        touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+        isSwipeRef.current = false;
+
+        initAudio();
 
         if (currentState === TIMER_STATE.RUNNING) {
             stopTimer();
@@ -156,14 +167,55 @@ export const useTimer = (onSolveComplete) => {
             setTime(0);
             setTimerState(TIMER_STATE.HOLDING);
             holdTimeoutRef.current = setTimeout(() => {
-                setTimerState(TIMER_STATE.READY);
-                playBeep();
+                // If it became a swipe, don't go to READY
+                if (!isSwipeRef.current) {
+                    setTimerState(TIMER_STATE.READY);
+                    playBeep();
+                }
             }, 500);
         }
-    }, [playBeep, stopTimer]); // warning: dep array mixed, cleaning up to []
+    }, [playBeep, stopTimer]);
+
+    const handleTouchMove = useCallback((e) => {
+        if (!touchStartRef.current) return;
+
+        const touch = e.touches[0];
+        const dy = touch.clientY - touchStartRef.current.y;
+        const dx = touch.clientX - touchStartRef.current.x;
+
+        // Debug log
+        console.log("Touch move:", dx, dy);
+
+        // Detect Downward Swipe (Relaxed: > 50px vertical, < 80px horizontal deviation)
+        // Ensure effective swipe is downwards
+        if (dy > 50 && Math.abs(dx) < 80) {
+            if (!isSwipeRef.current) {
+                isSwipeRef.current = true;
+                console.log("Swipe Down Detected!");
+
+                // Cancel dragging/holding logic
+                if (stateRef.current === TIMER_STATE.HOLDING) {
+                    clearTimeout(holdTimeoutRef.current);
+                    setTimerState(TIMER_STATE.IDLE);
+                }
+                // Trigger callback
+                if (onSwipeDownRef.current) {
+                    if (navigator.vibrate) navigator.vibrate(50);
+                    onSwipeDownRef.current();
+                }
+            }
+        }
+    }, []); // No dependencies needed as it uses refs
 
     const handleTouchEnd = useCallback((e) => {
         const currentState = stateRef.current;
+
+        if (isSwipeRef.current) {
+            touchStartRef.current = null;
+            isSwipeRef.current = false;
+            return;
+        }
+
         if (currentState === TIMER_STATE.READY) {
             startRef.current = performance.now();
             setTimerState(TIMER_STATE.RUNNING);
@@ -172,6 +224,8 @@ export const useTimer = (onSolveComplete) => {
             clearTimeout(holdTimeoutRef.current);
             setTimerState(TIMER_STATE.IDLE);
         }
+
+        touchStartRef.current = null;
     }, [update]);
 
     // Mouse handlers (same logic as touch)
@@ -182,20 +236,63 @@ export const useTimer = (onSolveComplete) => {
 
         initAudio();
 
+        // Capture start position for drag detection
+        touchStartRef.current = { x: e.clientX, y: e.clientY };
+        isSwipeRef.current = false;
+
         if (currentState === TIMER_STATE.RUNNING) {
             stopTimer();
         } else if (currentState === TIMER_STATE.IDLE || currentState === TIMER_STATE.STOPPED) {
             setTime(0);
             setTimerState(TIMER_STATE.HOLDING);
             holdTimeoutRef.current = setTimeout(() => {
-                setTimerState(TIMER_STATE.READY);
-                playBeep();
+                if (!isSwipeRef.current) {
+                    setTimerState(TIMER_STATE.READY);
+                    playBeep();
+                }
             }, 500);
         }
     }, [playBeep, stopTimer]);
 
+    const handleMouseMove = useCallback((e) => {
+        // Only process if mouse is down (we have a start pos)
+        if (!touchStartRef.current) return;
+
+        // If left button is not held, clear ref (safety for mouse up outside window)
+        if ((e.buttons & 1) === 0) {
+            touchStartRef.current = null;
+            return;
+        }
+
+        const dy = e.clientY - touchStartRef.current.y;
+        const dx = e.clientX - touchStartRef.current.x;
+
+        // Same threshold as touch
+        if (dy > 50 && Math.abs(dx) < 80) {
+            if (!isSwipeRef.current) {
+                isSwipeRef.current = true;
+                console.log("Mouse Swipe Down Detected!");
+
+                if (stateRef.current === TIMER_STATE.HOLDING) {
+                    clearTimeout(holdTimeoutRef.current);
+                    setTimerState(TIMER_STATE.IDLE);
+                }
+                if (onSwipeDownRef.current) {
+                    onSwipeDownRef.current();
+                }
+            }
+        }
+    }, []);
+
     const handleMouseUp = useCallback((e) => {
         const currentState = stateRef.current;
+
+        if (isSwipeRef.current) {
+            touchStartRef.current = null;
+            isSwipeRef.current = false;
+            return;
+        }
+
         if (currentState === TIMER_STATE.READY) {
             startRef.current = performance.now();
             setTimerState(TIMER_STATE.RUNNING);
@@ -204,6 +301,8 @@ export const useTimer = (onSolveComplete) => {
             clearTimeout(holdTimeoutRef.current);
             setTimerState(TIMER_STATE.IDLE);
         }
+
+        touchStartRef.current = null;
     }, [update]);
 
     // Stable listeners
@@ -215,8 +314,15 @@ export const useTimer = (onSolveComplete) => {
             window.removeEventListener('keyup', handleKeyUp);
             if (frameRef.current) cancelAnimationFrame(frameRef.current);
             if (holdTimeoutRef.current) clearTimeout(holdTimeoutRef.current);
+            // Cleanup manual touch listeners if any (removed)
+            const cleanupTouch = () => {
+                window.removeEventListener('touchstart', handleTouchStart);
+                window.removeEventListener('touchmove', handleTouchMove);
+                window.removeEventListener('touchend', handleTouchEnd);
+            };
+            cleanupTouch();
         };
     }, [handleKeyDown, handleKeyUp]);
 
-    return { time, timerState, formatTime, handleTouchStart, handleTouchEnd, handleMouseDown, handleMouseUp };
+    return { time, timerState, formatTime, handleKeyDown, handleKeyUp, handleTouchStart, handleTouchMove, handleTouchEnd, handleMouseDown, handleMouseMove, handleMouseUp };
 };
