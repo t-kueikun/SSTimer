@@ -1,9 +1,20 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg-gradient);
+    color: white;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
 .app-container {
     width: 100vw;
     height: 100vh;
     position: relative;
     overflow: hidden;
-    background-color: #0f172a;
+    background: transparent;
     color: white;
     touch-action: none;
     /* Prevent scroll/zoom for swipe gestures */

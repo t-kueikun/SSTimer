@@ -1,14 +1,16 @@
 import React from 'react';
 import './MainLayout.css';
 
-const MainLayout = ({ leftPanel, centerPanel, rightPanel, topBar, isFocused }) => {
+const MainLayout = ({ leftPanel, centerPanel, rightPanel, topBar, isFocused, showLeftPanel = true }) => {
     return (
         <div className={`main-layout ${isFocused ? 'focused' : ''}`}>
             <div className="header-bar">{topBar}</div>
             <div className="content-grid">
-                <aside className="left-panel">
-                    {leftPanel}
-                </aside>
+                {showLeftPanel && (
+                    <aside className="left-panel">
+                        {leftPanel}
+                    </aside>
+                )}
                 <main className="center-panel">
                     {centerPanel}
                 </main>

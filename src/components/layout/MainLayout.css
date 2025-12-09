@@ -15,32 +15,57 @@
     background: rgba(0, 0, 0, 0.2);
     border-bottom: 1px solid var(--panel-border);
     transition: opacity 0.4s ease, transform 0.4s ease;
+    z-index: 20;
+    /* Ensure on top */
+    position: relative;
 }
 
 .content-grid {
+    position: relative;
     display: flex;
     flex: 1;
     overflow: hidden;
+    /* Use justify-content space-between to push panels to edges */
+    justify-content: space-between;
 }
 
 .left-panel {
-    width: 300px;
+    width: 260px;
     background: var(--panel-bg);
     border-right: 1px solid var(--panel-border);
     backdrop-filter: blur(5px);
     display: flex;
     flex-direction: column;
     padding: 20px;
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    z-index: 10;
+    position: relative;
+    /* Ensure it stays above */
 }
 
+/* Center panel aboslute full screen flow */
 .center-panel {
+    position: relative;
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    position: relative;
+    z-index: 0;
+    min-width: 0;
+    height: 100%;
+    /* Force full height */
+    /* 
+       True Visual Centering Hack:
+       Horizontal: Right padding 190px (balances 260px Left - 70px Right).
+       Vertical: Bottom padding 60px (balances 60px Header).
+    */
+    padding-right: 190px;
+    padding-bottom: 60px;
+}
+
+.center-panel>* {
+    pointer-events: auto;
 }
 
 .right-panel {
@@ -52,7 +77,13 @@
     align-items: center;
     padding: 20px 0;
     gap: 20px;
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    z-index: 10;
+    position: relative;
+}
+
+.right-panel>* {
+    pointer-events: auto;
 }
 
 /* Immersive Mode */
@@ -79,5 +110,7 @@
     .center-panel {
         width: 100%;
         height: 100%;
+        padding-right: 0;
+        padding-bottom: 0;
     }
 }

@@ -1,8 +1,8 @@
 .timer-stats {
     display: flex;
-    gap: 40px;
+    gap: 30px;
     margin-top: 20px;
-    opacity: 0.8;
+    opacity: 0.9;
     transition: opacity 0.3s;
 }
 
@@ -10,19 +10,22 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
 }
 
 .stat-label {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--text-secondary);
+    letter-spacing: 1.5px;
+    color: #666;
+    /* Grey label */
+    margin-bottom: 2px;
+    font-weight: 600;
 }
 
 .stat-value {
-    font-size: 1.5rem;
-    font-weight: 600;
-    font-family: monospace;
-    color: var(--text-primary);
+    font-size: 1.4rem;
+    font-weight: 700;
+    font-family: 'Roboto Mono', monospace;
+    color: #fff;
+    letter-spacing: 1px;
 }
