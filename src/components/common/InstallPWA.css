@@ -1,0 +1,142 @@
+.pwa-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(30, 41, 59, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 20px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    width: 90%;
+    max-width: 400px;
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translate(-50%, 100px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}
+
+.pwa-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.pwa-icon {
+    font-size: 1.5rem;
+}
+
+.pwa-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.pwa-title {
+    font-weight: bold;
+    color: white;
+    font-size: 0.9rem;
+}
+
+.pwa-desc {
+    font-size: 0.75rem;
+    color: #aaa;
+}
+
+.pwa-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pwa-btn-install {
+    background: var(--accent-color);
+    border: none;
+    color: #1a1a2e;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: var(--accent-glow);
+}
+
+.pwa-btn-close {
+    background: transparent;
+    border: none;
+    color: #888;
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 5px;
+}
+
+/* iOS Guide */
+.pwa-guide-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+}
+
+.pwa-guide-card {
+    background: #1e293b;
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 320px;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pwa-guide-card h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.pwa-guide-card ol {
+    padding-left: 20px;
+    line-height: 1.8;
+    color: #ddd;
+}
+
+.pwa-guide-card button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.share-icon {
+    font-family: -apple-system, sans-serif;
+    color: #3b82f6;
+    font-weight: bold;
+}

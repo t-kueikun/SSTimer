@@ -11,6 +11,7 @@ import { useTimer } from './hooks/useTimer';
 import { useSolves } from './hooks/useSolves';
 import { useAuth } from './contexts/AuthContext';
 import { useLanguage } from './contexts/LanguageContext';
+import InstallPWA from './components/common/InstallPWA';
 import './components/stats/SessionStats.css';
 import './App.css';
 
@@ -285,6 +286,7 @@ function App() {
         rightPanel={renderTools()}
       />
       {showSettings && <Settings onClose={() => setShowSettings(false)} />}
+      <InstallPWA />
     </div>
   );
 }
