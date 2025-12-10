@@ -116,6 +116,8 @@ export const useTimer = (onSolveComplete, onSwipeDown) => {
             initAudio();
 
             if (currentState === TIMER_STATE.RUNNING) {
+                // Prevent accidental stops under 300ms (debounce)
+                if (performance.now() - startRef.current < 300) return;
                 stopTimer();
             } else if (currentState === TIMER_STATE.IDLE || currentState === TIMER_STATE.STOPPED) {
                 setTime(0);
@@ -129,6 +131,7 @@ export const useTimer = (onSolveComplete, onSwipeDown) => {
         } else {
             // Any other key stops it
             if (currentState === TIMER_STATE.RUNNING) {
+                if (performance.now() - startRef.current < 300) return;
                 stopTimer();
             }
         }
@@ -162,6 +165,7 @@ export const useTimer = (onSolveComplete, onSwipeDown) => {
         initAudio();
 
         if (currentState === TIMER_STATE.RUNNING) {
+            if (performance.now() - startRef.current < 300) return;
             stopTimer();
         } else if (currentState === TIMER_STATE.IDLE || currentState === TIMER_STATE.STOPPED) {
             setTime(0);
@@ -175,6 +179,9 @@ export const useTimer = (onSolveComplete, onSwipeDown) => {
             }, 500);
         }
     }, [playBeep, stopTimer]);
+
+    // ... omit handleTouchMove/End - need to match start/end lines to preserve existing code if I am not replacing it.
+    // I will replace handleKeyDown through handleMouseDown to cover all 3.
 
     const handleTouchMove = useCallback((e) => {
         if (!touchStartRef.current) return;
@@ -232,6 +239,8 @@ export const useTimer = (onSolveComplete, onSwipeDown) => {
     const handleMouseDown = useCallback((e) => {
         const currentState = stateRef.current;
         if (e.target.tagName === 'BUTTON') return;
+        // Ignore interactions with UI elements
+        if (e.target.closest('button, input, select, a, [role="button"], .settings-modal, .interactive, .header-bar, .left-panel, .right-panel')) return;
         if (e.button !== 0) return; // Only left click
 
         initAudio();
@@ -241,6 +250,7 @@ export const useTimer = (onSolveComplete, onSwipeDown) => {
         isSwipeRef.current = false;
 
         if (currentState === TIMER_STATE.RUNNING) {
+            if (performance.now() - startRef.current < 300) return;
             stopTimer();
         } else if (currentState === TIMER_STATE.IDLE || currentState === TIMER_STATE.STOPPED) {
             setTime(0);
