@@ -240,7 +240,7 @@ export const useTimer = (onSolveComplete, onSwipeDown) => {
         const currentState = stateRef.current;
         if (e.target.tagName === 'BUTTON') return;
         // Ignore interactions with UI elements
-        if (e.target.closest('button, input, select, a, [role="button"], .settings-modal, .interactive, .header-bar, .left-panel, .right-panel')) return;
+        if (e.target.closest('button, input, select, a, [role="button"], .settings-modal, .interactive, .header-bar, .left-panel, .right-panel, .mobile-drawer, .mobile-backdrop')) return;
         if (e.button !== 0) return; // Only left click
 
         initAudio();

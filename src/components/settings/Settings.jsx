@@ -3,7 +3,7 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import './Settings.css';
 
 const Settings = ({ onClose }) => {
-    const { language, setLanguage, t } = useLanguage();
+    const { language, changeLanguage, t } = useLanguage();
     const [activeTab, setActiveTab] = useState('general');
     const [legalType, setLegalType] = useState(null); // 'terms' | 'privacy'
 

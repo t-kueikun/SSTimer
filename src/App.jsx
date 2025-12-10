@@ -82,6 +82,48 @@ function App() {
       >
         🗑️
       </button>
+
+      {/* Mobile Only Tools (Auth & Lang) */}
+      <div className="mobile-only-tools" style={{ flexDirection: 'column', gap: '15px', alignItems: 'center', width: '100%', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '15px', marginTop: '10px' }}>
+        <LanguageSelector />
+        {currentUser ? (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+            {currentUser.photoURL &&
+              <img src={currentUser.photoURL} alt="user" style={{ width: 32, height: 32, borderRadius: '50%' }} />
+            }
+            <button
+              onClick={logout}
+              style={{
+                background: 'rgba(255,255,255,0.1)',
+                border: 'none',
+                color: '#aaa',
+                cursor: 'pointer',
+                padding: '5px 10px',
+                borderRadius: '4px',
+                width: '100%'
+              }}
+            >
+              {t('logout')}
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={login}
+            style={{
+              background: '#3a7bd5',
+              border: 'none',
+              color: 'white',
+              cursor: 'pointer',
+              padding: '8px 15px',
+              borderRadius: '20px',
+              fontWeight: 'bold',
+              width: '100%'
+            }}
+          >
+            {t('login')}
+          </button>
+        )}
+      </div>
     </div>
   );
 
@@ -103,6 +145,7 @@ function App() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px', width: '100%' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <button
+                className="desktop-sidebar-toggle"
                 onClick={() => setShowSidebar(prev => !prev)}
                 style={{
                   background: 'transparent',
@@ -126,6 +169,7 @@ function App() {
                 <Logo size={42} />
               </div>
               <span
+                className="app-title-text"
                 onClick={() => setShowSettings(true)}
                 style={{
                   cursor: 'pointer',
@@ -143,7 +187,7 @@ function App() {
             <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
               <EventSelector currentEvent={currentEvent} onEventChange={setCurrentEvent} />
             </div>
-            <div style={{ width: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '15px' }}>
+            <div className="header-tools" style={{ width: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '15px' }}>
               <LanguageSelector />
               {currentUser ? (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>

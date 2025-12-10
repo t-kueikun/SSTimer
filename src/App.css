@@ -19,3 +19,27 @@ body {
     touch-action: none;
     /* Prevent scroll/zoom for swipe gestures */
 }
+
+/* Mobile Responsive Adjustments */
+.mobile-only-tools {
+    display: none !important;
+    /* Hidden by default on desktop */
+}
+
+@media (max-width: 800px) {
+    .desktop-sidebar-toggle {
+        display: none !important;
+    }
+
+    .app-title-text {
+        display: none !important;
+    }
+
+    .header-tools {
+        display: none !important;
+    }
+
+    .mobile-only-tools {
+        display: flex !important;
+    }
+}
