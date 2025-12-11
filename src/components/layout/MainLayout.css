@@ -187,9 +187,7 @@
 }
 
 /* Force dark text to white in drawer if components use inheritance issues */
-.mobile-drawer-content * {
-    /* Generally handled by vars but safety check */
-}
+/* .mobile-drawer-content * { } - Removed empty rule */
 
 /* Responsive adjustments */
 @media (max-width: 800px) {
