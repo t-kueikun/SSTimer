@@ -10,14 +10,11 @@ body {
 }
 
 .app-container {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    min-height: 100vh;
     position: relative;
-    overflow: hidden;
     background: transparent;
     color: white;
-    touch-action: none;
-    /* Prevent scroll/zoom for swipe gestures */
 }
 
 /* Mobile Responsive Adjustments */

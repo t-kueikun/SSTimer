@@ -1,8 +1,10 @@
 .main-layout {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .header-bar {
@@ -23,7 +25,9 @@
 .content-grid {
     position: relative;
     display: flex;
-    flex: 1;
+    height: 100vh;
+    min-height: 100vh;
+    flex: none;
     overflow: hidden;
     /* Use justify-content space-between to push panels to edges */
     justify-content: space-between;

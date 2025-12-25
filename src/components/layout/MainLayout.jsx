@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import FooterInfo from '../common/FooterInfo';
 import './MainLayout.css';
 
 const MainLayout = ({ leftPanel, centerPanel, rightPanel, topBar, isFocused, showLeftPanel = true }) => {
@@ -28,6 +29,8 @@ const MainLayout = ({ leftPanel, centerPanel, rightPanel, topBar, isFocused, sho
                     {rightPanel}
                 </aside>
             </div>
+
+            <FooterInfo />
 
             {/* Mobile Drawer */}
             <div className={`mobile-drawer ${mobileMenuOpen ? 'open' : ''}`}>
